@@ -25,9 +25,9 @@ public class Booking extends HttpServlet {
 		String train = request.getParameter("train");
 		String clas = request.getParameter("clas");
 		String date = request.getParameter("date");
-		String[] name = request.getParameterValues("rowname");
-		String[] gender = request.getParameterValues("rowgender");
-		String[] age = request.getParameterValues("rowage");
+		String[] name = request.getParameterValues("name");
+		String[] gender = request.getParameterValues("gender");
+		String[] age = request.getParameterValues("age");
 		BookDAL bn = new BookDAL();
 		Ticket myticket = bn.tpass(from, to, train, clas, date, name, gender, age);
 		request.setAttribute("book", myticket);
