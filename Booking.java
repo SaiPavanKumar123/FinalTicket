@@ -43,7 +43,7 @@ public class Booking extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		RequestDispatcher rd = request.getRequestDispatcher("/final.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/Next.jsp");
 		rd.forward(request, response);
 	}
 }
