@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Ticket Reservation</title>
+<meta name="viewport" content="width=device-width, intial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<h1 style="font-weight: bold; text-decoration-color: bisque; text-align:center">Ticket
+			Reservation</h1>
+</head>
+
+<body>
+
+<br><br><br><br>
+	<div class="container text-center">	
+<div class="row">
+<div class="col">
+
+				
+					<label>From Station: <select id="from"
+						style="width: 200px; height: 25px;">
+							<option>select</option>
+
+					</select></label>
+				</div>
+
+				<div class="col">
+					<label>To Station: <select id="to"
+						style="width: 200px; height: 25px;">
+							<option>select</option>
+
+					</select></label>
+				</div>
+			</div>
+			</div>
+		
+
+		<br> <br>
+		<div class="container text-center">
+			<div class="row">
+
+
+				<div class="col">
+					<label>Train: <select id="train"
+						style="height: 30px; width: 150px;">
+							<option>Select</option>
+					</select></label>
+				</div>
+			</div>
+		</div>
+
+		<br> <br>
+		<div class="container text-center">
+			<div class="row align-items-center">
+
+				<div class="col">
+					<label for="clas">Class:</label> <select id="clas">
+						<option value="general">General</option>
+						<option value="sleeper">Sleeper</option>
+						<option value="1tier">1 Tier AC</option>
+						<option value="2tier">2 Tier AC</option>
+					</select>
+				</div>
+
+
+				<div class="col">
+					<label for="date">Date:</label> <input type="date" id="date">
+				</div>
+
+				<br> <br>
+				<div class="container">
+					<h3>Passenger Details</h3>
+				</div></div></div>
+<div class="container">
+<div class="row">
+<div class="col">
+		<label>Name :<input type="text" id="name"></label>&nbsp&nbsp&nbsp&nbsp&nbsp</div>
+	<div class="col">	<label>Gender :<input type="text" id="gender"></label>&nbsp&nbsp&nbsp&nbsp&nbsp</div>
+		<div class="col"><label>Age :<input type="text" id="age"></label>&nbsp&nbsp&nbsp&nbsp&nbsp</div>
+		<div class="col"><button id="add" onclick="addRow(event)">Add</button></div></div></div>
+
+		<div class="container">
+		<div class="row">
+<div class="col"><table id="table" style="align:center;"border="1"></div></div></div>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Gender</th>
+					<th>Age</th>
+					<th>Remove</th>
+				</tr>
+			</thead><br><br><br>
+			<tbody id="container">
+			</tbody>
+		</table><br><br>
+					
+			
+		<button onclick="bok()" style="justify-content:center">Submit</button>
+	<style>
+
+
+
+
+#submitBtn {
+	height: 25px;
+	width: 10%;
+}
+
+#rest {
+	height: 25px;
+	width: 10%;
+}
+
+#cancel {
+	height: 25px;
+	width: 10%;
+}
+
+
+
+
+
+
+#table{
+	width:1000px;
+	
+}
+</style>
+
+	<script>
+	
+	 var xhr=new XMLHttpRequest();
+     xhr.open('GET','StServlet?',true);
+     xhr.onreadystatechange=function(){
+     	if(xhr.readyState===4 && xhr.status===200){
+     		var data=JSON.parse(xhr.responseText);
+     		console.log(data);
+     		
+     		meth(data);
+     	}	
+     	
+     }
+     xhr.send();
+     function meth(data){
+			
+			
+     	var from=document.getElementById("from");
+     	data.forEach(function (da){
+     		var option=document.createElement("option");
+     		option.textContent=da.from;
+     		from.appendChild(option);
+     	})
+     	var to=document.getElementById("to");
+     	data.forEach(function (da){
+     		var option=document.createElement("option");
+     		option.textContent=da.to;
+     		to.appendChild(option);
+     	})
+     	var train=document.getElementById("train");
+     	data.forEach(function (da){
+     		
+     		var option=document.createElement("option");
+     		option.textContent=da.train;
+     		train.appendChild(option);
+     	})
+     }
+
+	
+	
+    function bok(){
+    	
+    	var from=document.getElementById('from').value;
+    	var to=document.getElementById('to').value;
+    	var train=document.getElementById('train').value;
+    	var clas=document.getElementById('clas').value;
+    	var date=document.getElementById('date').value;
+    	var tdata = "from=" + from + "&to=" + to + "&train=" + train + "&clas=" + clas + "&date=" + date + pass;
+    	console.log(pass);
+    	var xh=new XMLHttpRequest();
+    	xh.open('GET','Booking?'+tdata,true);
+    	
+    	xh.onreadystatechange=function(){
+    		
+    		if(xh.readyState===4){
+    			const data=xh.responseText;
+    			
+    			document.body.innerHTML=data;
+    			console.log(data);
+    	}
+    	}
+    	xh.send();
+    }
+	
+
+		
+        var pass="";
+        function addRow(event) {
+        	event.preventDefault();
+        	var tbody = document.getElementById('container');
+			var trow = document.createElement('tr');
+			var tdef1 = document.createElement('td');
+			var tdef2 = document.createElement('td');
+			var tdef3 = document.createElement('td');
+			var tdef4 = document.createElement('td');
+			
+			var name = document.getElementById('name').value;
+			var age = document.getElementById('age').value;
+			var gender = document.getElementById('gender').value;
+			
+			tdef1.textContent = name;
+			tdef3.textContent = age;
+			tdef2.textContent = gender;
+			
+			var button = document.createElement("button");
+			button.textContent = "Remove";
+			button.addEventListener('click', function () {
+				const row = this.parentNode.parentNode;
+				row.innerHTML = "";
+			})
+			tdef4.appendChild(button);
+			trow.appendChild(tdef1);
+			trow.appendChild(tdef2);
+			trow.appendChild(tdef3);
+			trow.appendChild(tdef4);
+			
+			tbody.appendChild(trow);
+	
+			pass += "&name=" +name + "&gender=" +gender + "&age=" +age;
+			console.log(pass);
+		
+		}
+        
+        
+        
+    </script>
+
+
+	</div>
+</body>
+
+</html>
